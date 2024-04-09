@@ -10,22 +10,13 @@ import {
 import logo from "../assets/react.svg";
 import Button from "../components/buttons";
 import { useState } from "react";
+import { useSideBarContext } from "../context/sidebarContext";
 function PageHeader() {
   const [showWidthFullSearch, setShowWidthFullSearch] = useState(false);
+  const { toggle } = useSideBarContext();
   return (
     <div className="flex gap-10 lg:gap-20 justify-between pt-2 mb-6 mx-4">
-      <div
-        className={` gap-4 shrink-0 items-center ${
-          showWidthFullSearch ? "hidden" : "flex"
-        }`}
-      >
-        <Button>
-          <FiMenu />
-        </Button>
-        <a href="/">
-          <img className="h-6" src={logo} alt="logo" />
-        </a>
-      </div>
+      <PageHeaderTitle hidden={showWidthFullSearch} toggle={toggle} />
       <form
         className={`gap-4 flex-grow   justify-center ${
           showWidthFullSearch ? "flex" : "hidden md:flex"
@@ -89,3 +80,24 @@ function PageHeader() {
 }
 
 export default PageHeader;
+
+type PageHeaderType = {
+  hidden?: boolean;
+  toggle?: () => void;
+};
+
+export function PageHeaderTitle({ hidden = false, toggle }: PageHeaderType) {
+  return (
+    <div
+      className={` gap-4 shrink-0 items-center ${hidden ? "hidden" : "flex"}`}
+    >
+      <Button onClick={toggle}>
+        <FiMenu />
+      </Button>
+      <a href="/">
+        <img className="h-6" src={logo} alt="logo" />
+      </a>
+    </div>
+  );
+}
+PageHeaderTitle;
